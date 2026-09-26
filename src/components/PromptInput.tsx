@@ -35,7 +35,9 @@ export function PromptInput({
     >
       <div className="prompt-header">
         <div className="prompt-header__title-group">
-          <span className="badge badge--accent">Input Desk</span>
+          <span className="badge badge--accent">
+            <i className="fa-solid fa-pen-to-square"></i> Input Desk
+          </span>
           <label className="prompt-header__title" htmlFor={id}>
             Notes or Topic
           </label>
@@ -50,7 +52,9 @@ export function PromptInput({
       </p>
 
       <div className="suggestions">
-        <span className="suggestions__label">Quick test:</span>
+        <span className="suggestions__label">
+          <i className="fa-solid fa-bolt"></i> Quick Prompts:
+        </span>
         <div className="suggestions__chips">
           {SUGGESTIONS.map((s) => (
             <button
@@ -74,7 +78,7 @@ export function PromptInput({
           value={value}
           onChange={(event) => onChange(event.target.value)}
           placeholder="Paste lecture notes, concepts, or raw facts here..."
-          rows={7}
+          rows={6}
           disabled={disabled}
         />
       </div>
@@ -88,14 +92,16 @@ export function PromptInput({
           {disabled ? (
             <span className="btn__loading-text">
               <span className="btn-spinner" aria-hidden="true" />
-              Generating Pack…
+              Generating Study Pack…
             </span>
           ) : (
-            <span>{submitLabel} →</span>
+            <span>
+              {submitLabel} <i className="fa-solid fa-arrow-right"></i>
+            </span>
           )}
         </button>
         <p className="prompt-security-note">
-          🔒 Structured JSON only · Zero chat transcripts · Groq LLM
+          <i className="fa-solid fa-lock"></i> Structured JSON only · Zero chat transcripts · Groq LLM
         </p>
       </div>
     </form>

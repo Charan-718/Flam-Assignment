@@ -1,16 +1,28 @@
 export function EmptyState() {
   return (
     <div className="panel panel--empty">
-      <p className="eyebrow">Idle</p>
-      <h2>Your cards and quiz land here</h2>
-      <p>
-        Paste notes on the left. After the model replies, this panel becomes a flip deck and a
-        scored quiz — not a chat log.
-      </p>
-      <ul className="checklist">
-        <li>Malformed JSON, empty replies, and timeouts stay in an error state</li>
-        <li>A late response cannot overwrite a newer pack</li>
-        <li>Missed quiz items can be retested without calling the model again</li>
+      <div className="panel--empty__header">
+        <span className="badge badge--brand">
+          <i className="fa-solid fa-hourglass-start"></i> Waiting for Input
+        </span>
+        <h2>Your cards and quiz will land here</h2>
+        <p>
+          Paste lecture notes or a topic above and click <strong>Build study pack</strong>. This section will turn into an interactive flip deck and a scored quiz — never a raw chat log.
+        </p>
+      </div>
+      <ul className="feature-list">
+        <li>
+          <i className="fa-solid fa-circle-check"></i>
+          <span><strong>Defensive Validation:</strong> Malformed JSON, empty replies, and timeouts stay safely in an error state without crashing.</span>
+        </li>
+        <li>
+          <i className="fa-solid fa-circle-check"></i>
+          <span><strong>Stale Guard:</strong> Slower older responses can never overwrite a newer pack.</span>
+        </li>
+        <li>
+          <i className="fa-solid fa-circle-check"></i>
+          <span><strong>Retest Loop:</strong> Missed quiz items can be re-tested immediately without unnecessary model calls.</span>
+        </li>
       </ul>
     </div>
   );

@@ -100,10 +100,12 @@ export default function App() {
     <div className="page">
       <header className="hero">
         <div className="hero__top">
-          <span className="badge badge--brand">⚡ Flam Frontend Assignment</span>
+          <span className="badge badge--brand">
+            <i className="fa-solid fa-graduation-cap"></i> Flam Frontend Assignment
+          </span>
           <div className="hero__status">
             <span className="status-dot" />
-            <span>Groq LLM Proxy · Structured JSON Only</span>
+            <span>Groq LLM Proxy · Structured JSON</span>
           </div>
         </div>
         <div className="hero__main">
@@ -114,17 +116,17 @@ export default function App() {
         </div>
       </header>
 
-      <main className="layout">
-        <aside className="column column--sidebar">
+      <main className="layout-stack">
+        <section className="stack-item stack-item--prompt">
           <PromptInput
             value={notes}
             onChange={setNotes}
             onSubmit={() => void runGenerate({ mode: "create" })}
             disabled={status === "loading"}
           />
-        </aside>
+        </section>
 
-        <section className="column column--main">
+        <section className="stack-item stack-item--results">
           {status === "idle" && !pack ? <EmptyState /> : null}
           {status === "loading" && !pack ? <LoadingState label={loadingLabel} /> : null}
           {status === "error" && error ? (
@@ -156,12 +158,14 @@ export default function App() {
 
       <footer className="foot">
         <div className="foot__left">
-          <span>🔒 API key securely proxies via backend. Model returns typed JSON.</span>
+          <span>
+            <i className="fa-solid fa-shield-halved"></i> API key securely proxies via backend. Model returns typed JSON.
+          </span>
         </div>
         <div className="foot__right">
           {pack ? (
             <button className="btn btn--ghost btn--sm" type="button" onClick={reset}>
-              Clear saved session
+              <i className="fa-solid fa-trash-can"></i> Clear saved session
             </button>
           ) : null}
         </div>

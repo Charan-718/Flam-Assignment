@@ -19,10 +19,16 @@ export function ResultView({ pack, onRefine, refining }: ResultViewProps) {
     <div className="result-card">
       <header className="result-card__header">
         <div className="result-card__top">
-          <span className="badge badge--accent">Active Study Pack</span>
+          <span className="badge badge--accent">
+            <i className="fa-solid fa-book-open"></i> Active Study Pack
+          </span>
           <div className="result-card__stats">
-            <span className="stat-chip">🃏 {pack.cards.length} Flashcards</span>
-            <span className="stat-chip">📝 {pack.quiz.length} Quiz Questions</span>
+            <span className="stat-chip">
+              <i className="fa-solid fa-layer-group"></i> {pack.cards.length} Flashcards
+            </span>
+            <span className="stat-chip">
+              <i className="fa-solid fa-clipboard-question"></i> {pack.quiz.length} Quiz Questions
+            </span>
           </div>
         </div>
         <h2 className="result-card__title">{pack.topic}</h2>
@@ -37,7 +43,9 @@ export function ResultView({ pack, onRefine, refining }: ResultViewProps) {
           className={`segmented-tab ${tab === "cards" ? "segmented-tab--active" : ""}`}
           onClick={() => setTab("cards")}
         >
-          <span className="tab-icon">🃏</span>
+          <span className="tab-icon">
+            <i className="fa-solid fa-layer-group"></i>
+          </span>
           <span>Flashcard Deck</span>
           <span className="tab-count">{pack.cards.length}</span>
         </button>
@@ -48,7 +56,9 @@ export function ResultView({ pack, onRefine, refining }: ResultViewProps) {
           className={`segmented-tab ${tab === "quiz" ? "segmented-tab--active" : ""}`}
           onClick={() => setTab("quiz")}
         >
-          <span className="tab-icon">📝</span>
+          <span className="tab-icon">
+            <i className="fa-solid fa-clipboard-question"></i>
+          </span>
           <span>Interactive Quiz</span>
           <span className="tab-count">{pack.quiz.length}</span>
         </button>
@@ -65,7 +75,9 @@ export function ResultView({ pack, onRefine, refining }: ResultViewProps) {
       <div className="refine-card">
         <div className="refine-card__header">
           <div className="refine-card__title-group">
-            <span className="refine-wand">✨</span>
+            <span className="refine-wand">
+              <i className="fa-solid fa-wand-magic-sparkles"></i>
+            </span>
             <label className="refine-card__title" htmlFor="refine">
               Refine with AI
             </label>
@@ -94,7 +106,13 @@ export function ResultView({ pack, onRefine, refining }: ResultViewProps) {
             type="submit"
             disabled={refining || !instruction.trim()}
           >
-            {refining ? "Updating…" : "Apply Update"}
+            {refining ? (
+              <span>Updating…</span>
+            ) : (
+              <span>
+                <i className="fa-solid fa-wand-magic-sparkles"></i> Apply Update
+              </span>
+            )}
           </button>
         </form>
       </div>

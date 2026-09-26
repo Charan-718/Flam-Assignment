@@ -67,7 +67,7 @@ export function FlashcardDeck({ cards }: FlashcardDeckProps) {
           </div>
         </div>
         <button className="btn btn--ghost btn--sm" type="button" onClick={shuffle} title="Randomize card order">
-          🔀 Shuffle
+          <i className="fa-solid fa-shuffle"></i> Shuffle
         </button>
       </div>
 
@@ -80,23 +80,38 @@ export function FlashcardDeck({ cards }: FlashcardDeckProps) {
         <span className="card__face card__face--front">
           <div className="card__top-badge">
             <span className="eyebrow">Question · Card {index + 1}</span>
-            {card.hint ? <span className="card__hint-pill">💡 Hint available</span> : null}
+            {card.hint ? (
+              <span className="card__hint-pill">
+                <i className="fa-regular fa-lightbulb"></i> Hint available
+              </span>
+            ) : null}
           </div>
           <span className="card__text">{card.question}</span>
-          {card.hint ? <span className="card__hint">Hint: {card.hint}</span> : null}
+          {card.hint ? (
+            <span className="card__hint">
+              <i className="fa-regular fa-lightbulb"></i> Hint: {card.hint}
+            </span>
+          ) : null}
           <div className="card__cue">
             <span>Tap card or press <kbd>Space</kbd> to reveal answer</span>
-            <span className="card__flip-icon">↻</span>
+            <span className="card__flip-icon">
+              <i className="fa-solid fa-arrows-rotate"></i>
+            </span>
           </div>
         </span>
         <span className="card__face card__face--back">
           <div className="card__top-badge">
             <span className="eyebrow">Answer</span>
-            <span className="card__revealed-pill">✓ Revealed</span>
+            <span className="card__revealed-pill">
+              <i className="fa-solid fa-check"></i> Revealed
+            </span>
           </div>
           <span className="card__text card__text--answer">{card.answer}</span>
           <div className="card__cue">
             <span>Tap or press <kbd>Space</kbd> to return to question</span>
+            <span className="card__flip-icon">
+              <i className="fa-solid fa-arrows-rotate"></i>
+            </span>
           </div>
         </span>
       </button>
@@ -108,7 +123,7 @@ export function FlashcardDeck({ cards }: FlashcardDeckProps) {
           onClick={() => go(index - 1)}
           title="Previous card (Left Arrow)"
         >
-          ← Prev
+          <i className="fa-solid fa-arrow-left"></i> Previous
         </button>
         <div className="deck__shortcuts">
           <span>Use <kbd>←</kbd> <kbd>→</kbd> arrows & <kbd>Space</kbd> to flip</span>
@@ -119,7 +134,7 @@ export function FlashcardDeck({ cards }: FlashcardDeckProps) {
           onClick={() => go(index + 1)}
           title="Next card (Right Arrow)"
         >
-          Next →
+          Next <i className="fa-solid fa-arrow-right"></i>
         </button>
       </div>
     </section>

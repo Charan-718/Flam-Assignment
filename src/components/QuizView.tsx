@@ -85,17 +85,23 @@ export function QuizView({ questions }: QuizViewProps) {
                   </div>
                   <div className="missed-card__comparison">
                     <div className="pill-answer pill-answer--wrong">
-                      <span className="pill-answer__tag">✕ You picked</span>
+                      <span className="pill-answer__tag">
+                        <i className="fa-solid fa-xmark"></i> You picked
+                      </span>
                       <span className="pill-answer__text">{item.options[answers[item.id].choice]}</span>
                     </div>
                     <div className="pill-answer pill-answer--correct">
-                      <span className="pill-answer__tag">✓ Correct</span>
+                      <span className="pill-answer__tag">
+                        <i className="fa-solid fa-check"></i> Correct
+                      </span>
                       <span className="pill-answer__text">{item.options[item.correctIndex]}</span>
                     </div>
                   </div>
                   {item.explanation ? (
                     <div className="missed-card__explanation">
-                      <span className="explanation-icon">💡</span>
+                      <span className="explanation-icon">
+                        <i className="fa-solid fa-circle-info"></i>
+                      </span>
                       <span>{item.explanation}</span>
                     </div>
                   ) : null}
@@ -112,11 +118,11 @@ export function QuizView({ questions }: QuizViewProps) {
               type="button"
               onClick={() => resetWith(missed, retestRound + 1)}
             >
-              Retest missed ({missed.length})
+              <i className="fa-solid fa-rotate-right"></i> Retest missed ({missed.length})
             </button>
           ) : null}
           <button className="btn btn--secondary" type="button" onClick={() => resetWith(questions, 0)}>
-            Retake full quiz
+            <i className="fa-solid fa-arrows-rotate"></i> Retake full quiz
           </button>
         </div>
       </section>
@@ -179,8 +185,16 @@ export function QuizView({ questions }: QuizViewProps) {
             >
               <span className="option__letter">{String.fromCharCode(65 + optionIndex)}</span>
               <span className="option__text">{option}</span>
-              {reveal && isCorrect ? <span className="option__status-icon">✓</span> : null}
-              {reveal && selected && !isCorrect ? <span className="option__status-icon">✕</span> : null}
+              {reveal && isCorrect ? (
+                <span className="option__status-icon">
+                  <i className="fa-solid fa-check"></i>
+                </span>
+              ) : null}
+              {reveal && selected && !isCorrect ? (
+                <span className="option__status-icon">
+                  <i className="fa-solid fa-xmark"></i>
+                </span>
+              ) : null}
             </button>
           );
         })}
@@ -189,7 +203,11 @@ export function QuizView({ questions }: QuizViewProps) {
       {answered ? (
         <div className={`explain ${answered.correct ? "explain--ok" : "explain--no"}`}>
           <span className="explain__indicator">
-            {answered.correct ? "✓ Correct" : "✕ Incorrect"}
+            {answered.correct ? (
+              <span><i className="fa-solid fa-check"></i> Correct</span>
+            ) : (
+              <span><i className="fa-solid fa-xmark"></i> Incorrect</span>
+            )}
           </span>
           <p className="explain__text">{question.explanation}</p>
         </div>
@@ -202,7 +220,7 @@ export function QuizView({ questions }: QuizViewProps) {
           onClick={() => setIndex((value) => Math.max(0, value - 1))}
           disabled={index === 0}
         >
-          ← Previous
+          <i className="fa-solid fa-arrow-left"></i> Previous
         </button>
         {index === pool.length - 1 ? (
           <button
@@ -211,7 +229,7 @@ export function QuizView({ questions }: QuizViewProps) {
             onClick={() => setFinished(true)}
             disabled={answeredCount < pool.length}
           >
-            See results ({correctCount}/{pool.length}) →
+            See results ({correctCount}/{pool.length}) <i className="fa-solid fa-arrow-right"></i>
           </button>
         ) : (
           <button
@@ -220,7 +238,7 @@ export function QuizView({ questions }: QuizViewProps) {
             onClick={() => setIndex((value) => Math.min(pool.length - 1, value + 1))}
             disabled={!answered}
           >
-            Next question →
+            Next question <i className="fa-solid fa-arrow-right"></i>
           </button>
         )}
       </div>
