@@ -109,7 +109,12 @@ export default function App() {
           </div>
         </div>
         <div className="hero__main">
-          <h1>Study Desk</h1>
+          <h1 className="hero-title">
+            <span className="title-cap-wrap">
+              <i className="fa-solid fa-graduation-cap title-cap" aria-hidden="true" />
+              S
+            </span>tudy Desk
+          </h1>
           <p className="lede">
             Paste lecture notes or a topic. Generates an interactive flashcard deck and a scored quiz with a dedicated re-test loop for missed questions — never a chatbot.
           </p>
