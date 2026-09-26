@@ -101,7 +101,7 @@ export default function App() {
       <header className="hero">
         <div className="hero__top">
           <span className="badge badge--brand">
-            <i className="fa-solid fa-graduation-cap"></i> Flam Frontend Assignment
+            Flam Frontend Assignment
           </span>
           <div className="hero__status">
             <span className="status-dot" />
