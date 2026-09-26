@@ -99,27 +99,34 @@ export default function App() {
   return (
     <div className="page">
       <header className="hero">
-        <p className="eyebrow">Flam frontend assignment</p>
-        <h1>Study desk</h1>
-        <p className="lede">
-          Paste notes. Get a flip deck and a quiz you can actually use — including a retest of
-          whatever you missed.
-        </p>
+        <div className="hero__top">
+          <span className="badge badge--brand">⚡ Flam Frontend Assignment</span>
+          <div className="hero__status">
+            <span className="status-dot" />
+            <span>Groq LLM Proxy · Structured JSON Only</span>
+          </div>
+        </div>
+        <div className="hero__main">
+          <h1>Study Desk</h1>
+          <p className="lede">
+            Paste lecture notes or a topic. Generates an interactive flashcard deck and a scored quiz with a dedicated re-test loop for missed questions — never a chatbot.
+          </p>
+        </div>
       </header>
 
       <main className="layout">
-        <section className="column">
+        <aside className="column column--sidebar">
           <PromptInput
             value={notes}
             onChange={setNotes}
             onSubmit={() => void runGenerate({ mode: "create" })}
             disabled={status === "loading"}
           />
-        </section>
+        </aside>
 
-        <section className="column">
+        <section className="column column--main">
           {status === "idle" && !pack ? <EmptyState /> : null}
-          {status === "loading" ? <LoadingState label={loadingLabel} /> : null}
+          {status === "loading" && !pack ? <LoadingState label={loadingLabel} /> : null}
           {status === "error" && error ? (
             <ErrorState
               error={error}
@@ -127,8 +134,14 @@ export default function App() {
               onReset={reset}
             />
           ) : null}
-          {pack && (status === "ready" || status === "error" || status === "loading") ? (
+          {pack ? (
             <div className={status === "loading" ? "result-wrap result-wrap--dim" : "result-wrap"}>
+              {status === "loading" ? (
+                <div className="refine-floating-banner" role="status" aria-live="polite">
+                  <div className="btn-spinner" aria-hidden="true" />
+                  <span>{loadingLabel}…</span>
+                </div>
+              ) : null}
               <ResultView
                 pack={pack}
                 refining={status === "loading"}
@@ -142,12 +155,16 @@ export default function App() {
       </main>
 
       <footer className="foot">
-        <span>API key stays on the server. Structured JSON only.</span>
-        {pack ? (
-          <button className="btn btn--ghost" type="button" onClick={reset}>
-            Clear saved pack
-          </button>
-        ) : null}
+        <div className="foot__left">
+          <span>🔒 API key securely proxies via backend. Model returns typed JSON.</span>
+        </div>
+        <div className="foot__right">
+          {pack ? (
+            <button className="btn btn--ghost btn--sm" type="button" onClick={reset}>
+              Clear saved session
+            </button>
+          ) : null}
+        </div>
       </footer>
     </div>
   );

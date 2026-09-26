@@ -16,9 +16,6 @@ export function FlashcardDeck({ cards }: FlashcardDeckProps) {
     setFlipped(false);
   }, [cards]);
 
-  const card = cards[order[index]];
-  const positionLabel = `${index + 1} / ${cards.length}`;
-
   const go = (next: number) => {
     const wrapped = (next + cards.length) % cards.length;
     setIndex(wrapped);
@@ -51,16 +48,26 @@ export function FlashcardDeck({ cards }: FlashcardDeckProps) {
     return () => window.removeEventListener("keydown", onKey);
   }, [index, cards.length]);
 
+  const card = cards[order[index]];
+  const progressPercent = Math.round(((index + 1) / cards.length) * 100);
+
   if (!card) {
     return <p className="muted">No flashcards in this pack.</p>;
   }
 
   return (
     <section className="deck" aria-label="Flashcards">
-      <div className="deck__meta">
-        <span>{positionLabel}</span>
-        <button className="btn btn--ghost" type="button" onClick={shuffle}>
-          Shuffle
+      <div className="deck__header">
+        <div className="deck__progress-info">
+          <span className="deck__counter">
+            Card <strong>{index + 1}</strong> of {cards.length}
+          </span>
+          <div className="deck__progress-bar">
+            <div className="deck__progress-fill" style={{ width: `${progressPercent}%` }} />
+          </div>
+        </div>
+        <button className="btn btn--ghost btn--sm" type="button" onClick={shuffle} title="Randomize card order">
+          🔀 Shuffle
         </button>
       </div>
 
@@ -71,23 +78,48 @@ export function FlashcardDeck({ cards }: FlashcardDeckProps) {
         aria-pressed={flipped}
       >
         <span className="card__face card__face--front">
-          <span className="eyebrow">Question</span>
+          <div className="card__top-badge">
+            <span className="eyebrow">Question · Card {index + 1}</span>
+            {card.hint ? <span className="card__hint-pill">💡 Hint available</span> : null}
+          </div>
           <span className="card__text">{card.question}</span>
           {card.hint ? <span className="card__hint">Hint: {card.hint}</span> : null}
-          <span className="card__cue">Tap or press space to flip</span>
+          <div className="card__cue">
+            <span>Tap card or press <kbd>Space</kbd> to reveal answer</span>
+            <span className="card__flip-icon">↻</span>
+          </div>
         </span>
         <span className="card__face card__face--back">
-          <span className="eyebrow">Answer</span>
-          <span className="card__text">{card.answer}</span>
+          <div className="card__top-badge">
+            <span className="eyebrow">Answer</span>
+            <span className="card__revealed-pill">✓ Revealed</span>
+          </div>
+          <span className="card__text card__text--answer">{card.answer}</span>
+          <div className="card__cue">
+            <span>Tap or press <kbd>Space</kbd> to return to question</span>
+          </div>
         </span>
       </button>
 
-      <div className="row row--spread">
-        <button className="btn" type="button" onClick={() => go(index - 1)}>
-          Previous
+      <div className="deck__controls">
+        <button
+          className="btn btn--secondary"
+          type="button"
+          onClick={() => go(index - 1)}
+          title="Previous card (Left Arrow)"
+        >
+          ← Prev
         </button>
-        <button className="btn" type="button" onClick={() => go(index + 1)}>
-          Next
+        <div className="deck__shortcuts">
+          <span>Use <kbd>←</kbd> <kbd>→</kbd> arrows & <kbd>Space</kbd> to flip</span>
+        </div>
+        <button
+          className="btn btn--secondary"
+          type="button"
+          onClick={() => go(index + 1)}
+          title="Next card (Right Arrow)"
+        >
+          Next →
         </button>
       </div>
     </section>

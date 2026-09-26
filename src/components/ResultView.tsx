@@ -16,66 +16,88 @@ export function ResultView({ pack, onRefine, refining }: ResultViewProps) {
   const [instruction, setInstruction] = useState("");
 
   return (
-    <div className="result">
-      <header className="result__head">
-        <p className="eyebrow">Study pack</p>
-        <h2>{pack.topic}</h2>
-        <p>{pack.summary}</p>
-        <p className="muted">
-          {pack.cards.length} cards · {pack.quiz.length} quiz questions
-        </p>
+    <div className="result-card">
+      <header className="result-card__header">
+        <div className="result-card__top">
+          <span className="badge badge--accent">Active Study Pack</span>
+          <div className="result-card__stats">
+            <span className="stat-chip">🃏 {pack.cards.length} Flashcards</span>
+            <span className="stat-chip">📝 {pack.quiz.length} Quiz Questions</span>
+          </div>
+        </div>
+        <h2 className="result-card__title">{pack.topic}</h2>
+        <p className="result-card__summary">{pack.summary}</p>
       </header>
 
-      <div className="tabs" role="tablist">
+      <div className="segmented-tabs" role="tablist" aria-label="Study modes">
         <button
           type="button"
           role="tab"
           aria-selected={tab === "cards"}
-          className={tab === "cards" ? "tab tab--active" : "tab"}
+          className={`segmented-tab ${tab === "cards" ? "segmented-tab--active" : ""}`}
           onClick={() => setTab("cards")}
         >
-          Flashcards
+          <span className="tab-icon">🃏</span>
+          <span>Flashcard Deck</span>
+          <span className="tab-count">{pack.cards.length}</span>
         </button>
         <button
           type="button"
           role="tab"
           aria-selected={tab === "quiz"}
-          className={tab === "quiz" ? "tab tab--active" : "tab"}
+          className={`segmented-tab ${tab === "quiz" ? "segmented-tab--active" : ""}`}
           onClick={() => setTab("quiz")}
         >
-          Quiz
+          <span className="tab-icon">📝</span>
+          <span>Interactive Quiz</span>
+          <span className="tab-count">{pack.quiz.length}</span>
         </button>
       </div>
 
-      {tab === "cards" ? (
-        <FlashcardDeck cards={pack.cards} />
-      ) : (
-        <QuizView key={pack.topic + pack.quiz.map((q) => q.id).join()} questions={pack.quiz} />
-      )}
+      <div className="result-card__content">
+        {tab === "cards" ? (
+          <FlashcardDeck cards={pack.cards} />
+        ) : (
+          <QuizView key={pack.topic + pack.quiz.map((q) => q.id).join()} questions={pack.quiz} />
+        )}
+      </div>
 
-      <form
-        className="refine"
-        onSubmit={(event) => {
-          event.preventDefault();
-          if (!instruction.trim() || refining) return;
-          onRefine(instruction.trim());
-          setInstruction("");
-        }}
-      >
-        <label htmlFor="refine">Refine this pack</label>
-        <div className="refine__row">
+      <div className="refine-card">
+        <div className="refine-card__header">
+          <div className="refine-card__title-group">
+            <span className="refine-wand">✨</span>
+            <label className="refine-card__title" htmlFor="refine">
+              Refine with AI
+            </label>
+          </div>
+          <span className="refine-card__hint">Edits existing pack in place</span>
+        </div>
+        <form
+          className="refine-form"
+          onSubmit={(event) => {
+            event.preventDefault();
+            if (!instruction.trim() || refining) return;
+            onRefine(instruction.trim());
+            setInstruction("");
+          }}
+        >
           <input
             id="refine"
+            className="refine-input"
             value={instruction}
             onChange={(event) => setInstruction(event.target.value)}
-            placeholder="e.g. make the quiz harder, add a card on ATP"
+            placeholder="e.g. Add 2 harder cards on enzyme kinetics, or make quiz question 3 tougher"
             disabled={refining}
           />
-          <button className="btn" type="submit" disabled={refining || !instruction.trim()}>
-            {refining ? "Updating…" : "Apply"}
+          <button
+            className="btn btn--primary refine-btn"
+            type="submit"
+            disabled={refining || !instruction.trim()}
+          >
+            {refining ? "Updating…" : "Apply Update"}
           </button>
-        </div>
-      </form>
+        </form>
+      </div>
     </div>
   );
 }

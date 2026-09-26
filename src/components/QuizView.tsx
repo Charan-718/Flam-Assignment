@@ -48,60 +48,101 @@ export function QuizView({ questions }: QuizViewProps) {
   }
 
   if (finished) {
+    const pct = Math.round((correctCount / pool.length) * 100);
+    const isCleanSweep = missed.length === 0;
+
     return (
-      <section className="quiz" aria-label="Quiz results">
-        <p className="eyebrow">{retestRound > 0 ? `Retest round ${retestRound}` : "Results"}</p>
-        <h3>
-          {correctCount} / {pool.length} correct
-        </h3>
-        <p className="muted">
-          {missed.length === 0
-            ? "Clean sweep. You can run the full quiz again anytime."
-            : "Missed items stay on the desk until you retest them."}
-        </p>
+      <section className="quiz quiz--results" aria-label="Quiz results">
+        <div className="results-hero">
+          <div className={`results-hero__badge ${isCleanSweep ? "results-hero__badge--great" : "results-hero__badge--needs-work"}`}>
+            <span className="results-hero__score">{correctCount}/{pool.length}</span>
+            <span className="results-hero__pct">{pct}%</span>
+          </div>
+          <div className="results-hero__info">
+            <span className="badge badge--accent">
+              {retestRound > 0 ? `Retest Round ${retestRound}` : "Quiz Completed"}
+            </span>
+            <h3>
+              {isCleanSweep ? "Clean Sweep! Perfect Score" : `${missed.length} Questions to Review`}
+            </h3>
+            <p className="muted">
+              {isCleanSweep
+                ? "You answered every question correctly in this deck."
+                : "Review what you missed below. You can retest only these missed questions without starting over."}
+            </p>
+          </div>
+        </div>
 
         {missed.length > 0 ? (
-          <ul className="missed">
-            {missed.map((item) => (
-              <li key={item.id}>
-                <strong>{item.question}</strong>
-                <span>
-                  You picked {item.options[answers[item.id].choice]}. Correct:{" "}
-                  {item.options[item.correctIndex]}
-                </span>
-              </li>
-            ))}
-          </ul>
+          <div className="review-section">
+            <h4 className="review-section__title">Review Missed Answers</h4>
+            <div className="missed-cards">
+              {missed.map((item, i) => (
+                <div key={item.id} className="missed-card">
+                  <div className="missed-card__header">
+                    <span className="missed-card__index">#{i + 1}</span>
+                    <strong className="missed-card__question">{item.question}</strong>
+                  </div>
+                  <div className="missed-card__comparison">
+                    <div className="pill-answer pill-answer--wrong">
+                      <span className="pill-answer__tag">✕ You picked</span>
+                      <span className="pill-answer__text">{item.options[answers[item.id].choice]}</span>
+                    </div>
+                    <div className="pill-answer pill-answer--correct">
+                      <span className="pill-answer__tag">✓ Correct</span>
+                      <span className="pill-answer__text">{item.options[item.correctIndex]}</span>
+                    </div>
+                  </div>
+                  {item.explanation ? (
+                    <div className="missed-card__explanation">
+                      <span className="explanation-icon">💡</span>
+                      <span>{item.explanation}</span>
+                    </div>
+                  ) : null}
+                </div>
+              ))}
+            </div>
+          </div>
         ) : null}
 
-        <div className="row">
+        <div className="results-actions">
           {missed.length > 0 ? (
             <button
               className="btn btn--primary"
               type="button"
               onClick={() => resetWith(missed, retestRound + 1)}
             >
-              Retest missed
+              Retest missed ({missed.length})
             </button>
           ) : null}
-          <button className="btn" type="button" onClick={() => resetWith(questions, 0)}>
-            Full quiz again
+          <button className="btn btn--secondary" type="button" onClick={() => resetWith(questions, 0)}>
+            Retake full quiz
           </button>
         </div>
       </section>
     );
   }
 
+  const progressPercent = Math.round(((index + (answered ? 1 : 0)) / pool.length) * 100);
+
   return (
     <section className="quiz" aria-label="Quiz">
-      <div className="deck__meta">
-        <span>
-          Question {index + 1} / {pool.length}
-          {retestRound > 0 ? ` · retest ${retestRound}` : ""}
-        </span>
-        <span>
-          {answeredCount} answered · {correctCount} correct
-        </span>
+      <div className="quiz-topbar">
+        <div className="quiz-progress-info">
+          <span className="quiz-question-counter">
+            Question <strong>{index + 1}</strong> of {pool.length}
+            {retestRound > 0 ? ` (Retest ${retestRound})` : ""}
+          </span>
+          <span className="quiz-score-tracker">
+            {answeredCount} answered · <strong>{correctCount}</strong> correct
+          </span>
+        </div>
+        <div className="progress-bar-track">
+          <div
+            className="progress-bar-fill"
+            style={{ width: `${progressPercent}%` }}
+          />
+        </div>
       </div>
 
       <h3 className="quiz__prompt">{question.question}</h3>
@@ -137,27 +178,31 @@ export function QuizView({ questions }: QuizViewProps) {
               }}
             >
               <span className="option__letter">{String.fromCharCode(65 + optionIndex)}</span>
-              <span>{option}</span>
+              <span className="option__text">{option}</span>
+              {reveal && isCorrect ? <span className="option__status-icon">✓</span> : null}
+              {reveal && selected && !isCorrect ? <span className="option__status-icon">✕</span> : null}
             </button>
           );
         })}
       </div>
 
       {answered ? (
-        <p className={`explain ${answered.correct ? "explain--ok" : "explain--no"}`}>
-          {answered.correct ? "Correct. " : "Not quite. "}
-          {question.explanation}
-        </p>
+        <div className={`explain ${answered.correct ? "explain--ok" : "explain--no"}`}>
+          <span className="explain__indicator">
+            {answered.correct ? "✓ Correct" : "✕ Incorrect"}
+          </span>
+          <p className="explain__text">{question.explanation}</p>
+        </div>
       ) : null}
 
-      <div className="row row--spread">
+      <div className="quiz-navigation">
         <button
-          className="btn"
+          className="btn btn--secondary"
           type="button"
           onClick={() => setIndex((value) => Math.max(0, value - 1))}
           disabled={index === 0}
         >
-          Previous
+          ← Previous
         </button>
         {index === pool.length - 1 ? (
           <button
@@ -166,7 +211,7 @@ export function QuizView({ questions }: QuizViewProps) {
             onClick={() => setFinished(true)}
             disabled={answeredCount < pool.length}
           >
-            See results
+            See results ({correctCount}/{pool.length}) →
           </button>
         ) : (
           <button
@@ -175,7 +220,7 @@ export function QuizView({ questions }: QuizViewProps) {
             onClick={() => setIndex((value) => Math.min(pool.length - 1, value + 1))}
             disabled={!answered}
           >
-            Next
+            Next question →
           </button>
         )}
       </div>
