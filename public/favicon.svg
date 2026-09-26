@@ -1,12 +1,12 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
   <!-- Skull Cap Base -->
-  <path d="M15,31 L15,41 C15,49 22,54 32,54 C42,54 49,49 49,41 L49,31" fill="#8c3211" stroke="#ffffff" stroke-width="1.8" stroke-linejoin="round"/>
+  <path d="M15,31 L15,41 C15,49 22,54 32,54 C42,54 49,49 49,41 L49,31" fill="#e85a5e" stroke="#191d24" stroke-width="2.5" stroke-linejoin="round"/>
   <!-- Mortarboard Diamond Top -->
-  <polygon points="32,10 59,23.5 32,37 5,23.5" fill="#b5451b" stroke="#ffffff" stroke-width="2" stroke-linejoin="round"/>
+  <polygon points="32,10 59,23.5 32,37 5,23.5" fill="#ff7074" stroke="#191d24" stroke-width="2.5" stroke-linejoin="round"/>
   <!-- Center Button -->
-  <circle cx="32" cy="23.5" r="2.8" fill="#ffffff"/>
+  <circle cx="32" cy="23.5" r="3" fill="#ffffff" stroke="#191d24" stroke-width="1.5"/>
   <!-- Tassel Cord -->
-  <path d="M32,23.5 Q18,25.5 11,34 L11,48" fill="none" stroke="#f6be50" stroke-width="2.2" stroke-linecap="round"/>
+  <path d="M32,23.5 Q18,25.5 11,34 L11,48" fill="none" stroke="#23bad6" stroke-width="2.8" stroke-linecap="round"/>
   <!-- Tassel Fringe -->
-  <rect x="9" y="46" width="4" height="8" rx="1.5" fill="#f6be50" stroke="#ffffff" stroke-width="1"/>
+  <rect x="9" y="46" width="4.5" height="8" rx="1.5" fill="#23bad6" stroke="#191d24" stroke-width="1.5"/>
 </svg>
